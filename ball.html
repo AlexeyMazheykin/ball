@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #canvas {
+            display: block;
+            outline: 2px solid gray;
+            margin: 0 auto;
+        }
+        #img {
+            display: none;
+        }
+    </style>
+    <title>ball</title>
+</head>
+
+<body>
+    <img src="./img/ball.png" id="img">
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <script>
+
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+        let width = canvas.width;
+        let height = canvas.height;
+
+
+        let circle = function (x, y, radius) {
+            context.fillStyle = 'red';
+            context.beginPath();
+            context.arc(x, y, radius, 0, Math.PI * 2, false);
+            context.fill();
+        }
+
+        let rect = function (x, y, width, height, fill) {
+            context.beginPath();
+            context.fillStyle = '#000'
+            context.rect(x, y, width, height);
+            fill ? context.fill() : context.stroke();
+        }
+
+        let Ball = function () {
+            this.radius = 10;
+            this.x = this.radius;
+            this.y = height / 2;
+        }
+
+        let Rect = function () {
+            this.x = width;
+            this.height = 100;
+            this.y = Math.floor(Math.random() * (1+height - this.height));
+            this.width = 10;
+            this.speed = -5;
+        }
+
+        Rect.prototype.draw = function () {
+            rect(this.x, this.y, this.width, this.height, true);
+        }
+
+        Ball.prototype.draw = function () {
+            circle(this.x, this.y, this.radius);
+        }
+
+        Ball.prototype.move = function (speed) {
+            this.y += speed;
+            if (this.y < 0 + this.radius) {
+                this.y = 0 + this.radius;
+            }
+            if (this.y > height - this.radius) {
+                this.y = height - this.radius;
+            }
+        }
+
+        Rect.prototype.move = function () {
+            this.x += this.speed;
+        }
+
+        let ball = new Ball;
+
+        document.addEventListener('keydown', function (ev) {
+            if (ev.keyCode === 38) {
+                ball.move(-10);
+            }
+            if (ev.keyCode === 40) {
+                ball.move(10);
+            }
+        });
+
+        let blocks = [];
+        blocks[0] = new Rect;
+
+        let score = 0;
+        let animTime = 50;
+        let playing = true;
+
+        let loop = function () {
+            context.clearRect(0, 0, width, height);
+            ball.draw();
+            for (let i = 0; i < blocks.length; i++) {
+                blocks[i].draw();
+                blocks[i].move();
+                if (blocks[i].x === width * 0.625) {
+                    blocks.push(new Rect);
+                }
+                if (ball.x >= blocks[i].x
+                    && ball.x <= blocks[i].x + blocks[i].width
+                    && ball.y + ball.radius >= blocks[i].y
+                    && ball.y - ball.radius <= blocks[i].y + blocks[i].height) {
+                    alert(`Вы продули, ваш счет составил: ${score}`)
+                    playing = false;
+                }
+                if (blocks[i].x === 5) {
+                    score++;
+                    animTime -= 1;
+                }
+            }
+            context.fillStyle = "#000"
+            context.font = "25px Sans";
+            context.fillText('Счет: ' + score, 10, height - 20);
+            if (playing) {
+                setTimeout(loop, animTime);
+            }
+        };
+
+        loop();
+
+
+    </script>
+</body>
+
+</html>
