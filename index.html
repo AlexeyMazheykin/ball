@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
@@ -14,11 +14,11 @@
             display: none;
         }
     </style>
-    <title>ball</title>
+    <title>Ball</title>
 </head>
 
 <body>
-    <img src="./img/ball.png" id="img">
+
     <canvas id="canvas" width="600" height="600"></canvas>
     <script>
 
@@ -51,7 +51,7 @@
         let Rect = function () {
             this.x = width;
             this.height = 100;
-            this.y = Math.floor(Math.random() * (1+height - this.height));
+            this.y = Math.floor(Math.random() * (1 + height - this.height));
             this.width = 10;
             this.speed = -5;
         }
@@ -118,7 +118,7 @@
                 }
             }
             context.fillStyle = "#000"
-            context.font = "25px Sans";
+            context.font = "20px Verdana";
             context.fillText('Счет: ' + score, 10, height - 20);
             if (playing) {
                 setTimeout(loop, animTime);
