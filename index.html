@@ -111,6 +111,10 @@
                     && ball.y - ball.radius <= blocks[i].y + blocks[i].height) {
                     alert(`Вы продули, ваш счет составил: ${score}`)
                     playing = false;
+                } 
+                if (score === 90) {
+                    alert(`Вы молодец! Вы круче чем создатель!) Ваш счет составил: ${score}`)
+                    playing = false;
                 }
                 if (blocks[i].x === 5) {
                     score++;
