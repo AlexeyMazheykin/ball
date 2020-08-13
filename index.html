@@ -10,6 +10,7 @@
             outline: 2px solid gray;
             margin: 0 auto;
         }
+
         #img {
             display: none;
         }
@@ -42,40 +43,41 @@
             fill ? context.fill() : context.stroke();
         }
 
-        let Ball = function () {
-            this.radius = 10;
-            this.x = this.radius;
-            this.y = height / 2;
-        }
-
-        let Rect = function () {
-            this.x = width;
-            this.height = 100;
-            this.y = Math.floor(Math.random() * (1 + height - this.height));
-            this.width = 10;
-            this.speed = -5;
-        }
-
-        Rect.prototype.draw = function () {
-            rect(this.x, this.y, this.width, this.height, true);
-        }
-
-        Ball.prototype.draw = function () {
-            circle(this.x, this.y, this.radius);
-        }
-
-        Ball.prototype.move = function (speed) {
-            this.y += speed;
-            if (this.y < 0 + this.radius) {
-                this.y = 0 + this.radius;
+        class Ball {
+            constructor() {
+                this.radius = 10;
+                this.x = this.radius;
+                this.y = height / 2;
             }
-            if (this.y > height - this.radius) {
-                this.y = height - this.radius;
+            draw() {
+                circle(this.x, this.y, this.radius);
+            }
+
+            move(speed) {
+                this.y += speed;
+                if (this.y < 0 + this.radius) {
+                    this.y = 0 + this.radius;
+                }
+                if (this.y > height - this.radius) {
+                    this.y = height - this.radius;
+                }
             }
         }
 
-        Rect.prototype.move = function () {
-            this.x += this.speed;
+        class Rect {
+            constructor(width, height) {
+                this.x = width;
+                this.height = 100;
+                this.y = Math.floor(Math.random() * (1 + height - this.height));
+                this.width = 10;
+                this.speed = -5;
+            }
+            draw() {
+                rect(this.x, this.y, this.width, this.height, true);
+            }
+            move() {
+                this.x += this.speed;
+            }
         }
 
         let ball = new Ball;
@@ -90,7 +92,7 @@
         });
 
         let blocks = [];
-        blocks[0] = new Rect;
+        blocks[0] = new Rect(width, height);
 
         let score = 0;
         let animTime = 50;
@@ -103,7 +105,7 @@
                 blocks[i].draw();
                 blocks[i].move();
                 if (blocks[i].x === width * 0.625) {
-                    blocks.push(new Rect);
+                    blocks.push(new Rect(width, height));
                 }
                 if (ball.x >= blocks[i].x
                     && ball.x <= blocks[i].x + blocks[i].width
@@ -111,7 +113,7 @@
                     && ball.y - ball.radius <= blocks[i].y + blocks[i].height) {
                     alert(`Вы продули, ваш счет составил: ${score}`)
                     playing = false;
-                } 
+                }
                 if (score === 90) {
                     alert(`Вы молодец! Вы круче чем создатель!) Ваш счет составил: ${score}`)
                     playing = false;
@@ -130,8 +132,6 @@
         };
 
         loop();
-
-
     </script>
 </body>
 
